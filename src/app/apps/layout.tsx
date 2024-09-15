@@ -1,4 +1,6 @@
 // import FetchDataSteps from "@/components/tutorial/fetch-data-steps";
+import { Header } from "@/components/layout/Header/Header";
+import { Sidebar } from "@/components/layout/Sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -18,6 +20,12 @@ export default async function Layout({
     return redirect("/sign-in");
   }
   return (
-    <div className="max-w-7xl flex flex-col gap-12 items-start">{children}</div>
+    <div className="flex">
+      <Sidebar />
+      <main className="w-full flex-1 overflow-hidden">
+        <Header />
+        {children}
+      </main>
+    </div>
   );
 }

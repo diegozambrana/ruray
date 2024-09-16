@@ -10,17 +10,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { newQuestionFormat } from "@/types";
 import { BaseSyntheticEvent, FC, useState } from "react";
 
 type NewQuestionProps = {
   open: boolean;
   onClose: () => void;
-};
-
-type newQuestionFormat = {
-  question: string;
-  alternativeQuestions: string[];
-  answers: string[];
 };
 
 const BASE_NEW_QUESTION: newQuestionFormat = {

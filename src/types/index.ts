@@ -30,3 +30,11 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+// Question Manager types
+
+export type newQuestionFormat = {
+  question: string;
+  alternativeQuestions: string[];
+  answers: string[];
+};

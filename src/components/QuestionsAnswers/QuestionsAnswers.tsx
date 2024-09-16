@@ -1,9 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
-import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+} from "@/components/ui/accordion";
 import { Copy, EllipsisVertical, Pencil, Star, Trash2 } from "lucide-react";
 import { AccordionHeader, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +20,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { NewQuestion } from "./dialogs";
+
 export const QuestionsAnswers = () => {
+  const [openNewQuestion, setOpenNewQuestion] = useState(false);
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -26,7 +34,13 @@ export const QuestionsAnswers = () => {
         <div className="w-2/3">
           <div className="flex justify-between">
             <div>
-              <Button>+ New Question</Button>
+              <Button
+                onClick={() => {
+                  setOpenNewQuestion(true);
+                }}
+              >
+                + New Question
+              </Button>
             </div>
             <div>
               <div className="flex">
@@ -50,9 +64,7 @@ export const QuestionsAnswers = () => {
                         <div>
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <Button size="icon" variant="outline">
-                                <EllipsisVertical className="h-4 w-4" />
-                              </Button>
+                              <EllipsisVertical className="h-4 w-8" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               <DropdownMenuItem>
@@ -91,9 +103,7 @@ export const QuestionsAnswers = () => {
                           <div className="flex space-x-2">
                             <DropdownMenu>
                               <DropdownMenuTrigger>
-                                <Button size="icon" variant="link">
-                                  <EllipsisVertical className="h-4 w-4" />
-                                </Button>
+                                <EllipsisVertical className="h-4 w-8" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent>
                                 <DropdownMenuItem>
@@ -126,9 +136,7 @@ export const QuestionsAnswers = () => {
                           <div className="flex space-x-2">
                             <DropdownMenu>
                               <DropdownMenuTrigger>
-                                <Button size="icon" variant="link">
-                                  <EllipsisVertical className="h-4 w-4" />
-                                </Button>
+                                <EllipsisVertical className="h-4 w-8" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent>
                                 <DropdownMenuItem>
@@ -194,6 +202,12 @@ export const QuestionsAnswers = () => {
           </Card> */}
         </div>
       </div>
+      <NewQuestion
+        open={openNewQuestion}
+        onClose={() => {
+          setOpenNewQuestion(false);
+        }}
+      />
     </div>
   );
 };

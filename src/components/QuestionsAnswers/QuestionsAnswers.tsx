@@ -4,9 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
-import { Copy, Star } from "lucide-react";
+import { Copy, EllipsisVertical, Pencil, Star, Trash2 } from "lucide-react";
 import { AccordionHeader, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const QuestionsAnswers = () => {
   return (
@@ -34,11 +42,31 @@ export const QuestionsAnswers = () => {
                 <Card>
                   <CardContent className="py-4">
                     <AccordionHeader>
-                      <AccordionTrigger>
-                        <div className="text-lg font-bold">
-                          Original Question #1
+                      <div className="flex justify-between">
+                        <AccordionTrigger>
+                          <div className="text-lg font-bold">
+                            Original Question #1
+                          </div>
+                        </AccordionTrigger>
+                        <div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button size="icon" variant="outline">
+                                <EllipsisVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem>
+                                <Pencil className="h-4 w-4 mr-4" /> Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem>
+                                <Trash2 className="h-4 w-4 mr-4" /> Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
-                      </AccordionTrigger>
+                      </div>
                     </AccordionHeader>
                     <AccordionContent>
                       <div className="text-sm text-gray-500">
@@ -56,31 +84,69 @@ export const QuestionsAnswers = () => {
                         {/* Answer 1 */}
                         <div className="flex justify-between bg-gray-100 p-2">
                           <p>
-                            Answer ipsum dolor sit amet, consectetur adipiscing
-                            elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Aenean tincidunt ligula eu felis luctus, in
+                            molestie magna egestas. Etiam dapibus eu arcu ac
+                            aliquet.
                           </p>
                           <div className="flex space-x-2">
-                            <Button size="icon">
-                              <Copy className="h-4 w-4" />
-                            </Button>
-                            <Button size="icon">
-                              <Star className="h-4 w-4" />
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <Button size="icon" variant="link">
+                                  <EllipsisVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                  <Copy className="h-4 w-4 mr-4" /> Copy
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Star className="h-4 w-4 mr-4" /> Add Favorite
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Pencil className="h-4 w-4 mr-4" /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                  <Trash2 className="h-4 w-4 mr-4" /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </div>
                         {/* Answer 2 */}
                         <div className="flex justify-between bg-gray-100 p-2">
                           <p>
-                            Answer ipsum dolor sit amet, consectetur adipiscing
-                            elit.
+                            Etiam id neque augue. Praesent pulvinar ipsum nisl,
+                            et consequat nibh auctor lobortis. Integer vel
+                            vehicula nisi, eget eleifend nibh. Integer rhoncus
+                            nunc vitae enim pretium viverra. Pellentesque
+                            habitant morbi tristique senectus et netus et
+                            malesuada fames ac turpis egestas.
                           </p>
                           <div className="flex space-x-2">
-                            <Button size="icon">
-                              <Copy className="h-4 w-4" />
-                            </Button>
-                            <Button size="icon">
-                              <Star className="h-4 w-4" />
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <Button size="icon" variant="link">
+                                  <EllipsisVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                  <Copy className="h-4 w-4 mr-4" /> Copy
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Star className="h-4 w-4 mr-4" /> Add Favorite
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Pencil className="h-4 w-4 mr-4" /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                  <Trash2 className="h-4 w-4 mr-4" /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </div>
                         {/* Add Answer Button */}

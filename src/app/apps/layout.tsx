@@ -1,8 +1,6 @@
-// import FetchDataSteps from "@/components/tutorial/fetch-data-steps";
 import { Header } from "@/components/layout/Header/Header";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { createClient } from "@/utils/supabase/server";
-import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function Layout({

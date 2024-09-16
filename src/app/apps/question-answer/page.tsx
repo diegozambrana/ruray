@@ -1,5 +1,10 @@
 import { PageContainer } from "@/components/layout/PageContainer";
+import { QuestionsAnswers } from "@/components/QuestionsAnswers";
 
 export default function QuestionAnswer() {
-  return <PageContainer>QuestionAnswer</PageContainer>;
+  return (
+    <PageContainer>
+      <QuestionsAnswers />
+    </PageContainer>
+  );
 }

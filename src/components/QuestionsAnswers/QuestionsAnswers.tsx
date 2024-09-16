@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Toaster } from "@/components/ui/toaster";
 
 import { NewQuestion } from "./dialogs";
 
@@ -208,6 +209,7 @@ export const QuestionsAnswers = () => {
           setOpenNewQuestion(false);
         }}
       />
+      <Toaster />
     </div>
   );
 };

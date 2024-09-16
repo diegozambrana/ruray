@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { newQuestionFormat } from "@/types";
 import { BaseSyntheticEvent, FC, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 type NewQuestionProps = {
   open: boolean;
@@ -26,6 +27,8 @@ const BASE_NEW_QUESTION: newQuestionFormat = {
 
 export const NewQuestion: FC<NewQuestionProps> = ({ open, onClose }) => {
   const [data, setData] = useState<newQuestionFormat>(BASE_NEW_QUESTION);
+  const [creating, setCreating] = useState(false);
+  const { toast } = useToast();
 
   const onChange = (value: string, field: string, index: number = 0) => {
     if (field === "question") {
@@ -36,6 +39,34 @@ export const NewQuestion: FC<NewQuestionProps> = ({ open, onClose }) => {
         [field]: d[field].map((item, i) => (i === index ? value : item)),
       }));
     }
+  };
+
+  const onCreate = async () => {
+    if (data.question === "") {
+      console.log("Question is required");
+      return;
+    }
+    setCreating(true);
+    fetch("/api/questions", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("Success");
+        console.log(res);
+        toast({
+          title: "Question added successfully",
+          description: "The question was added successfully",
+        });
+        onClose();
+      })
+      .catch((err) => {
+        console.log("ERROR", err);
+      })
+      .finally(() => {
+        setCreating(false);
+      });
   };
 
   return (
@@ -113,7 +144,9 @@ export const NewQuestion: FC<NewQuestionProps> = ({ open, onClose }) => {
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={onClose}>Create</Button>
+          <Button onClick={onCreate} disabled={creating}>
+            {creating ? "Creating" : "Create"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

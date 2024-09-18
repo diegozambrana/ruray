@@ -8,9 +8,10 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Copy, EllipsisVertical, Pencil, Star, Trash2 } from "lucide-react";
-import { AccordionHeader, AccordionTrigger } from "@radix-ui/react-accordion";
+// import { AccordionHeader, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -109,31 +110,29 @@ export const QuestionsAnswers = () => {
                 >
                   <Card>
                     <CardContent className="py-4">
-                      <AccordionHeader>
-                        <div className="flex justify-between">
-                          <AccordionTrigger>
-                            <div className="text-lg font-bold">
-                              {question.question}
-                            </div>
+                      <div className="flex">
+                        <div className="flex-grow">
+                          <AccordionTrigger className="p-0 text-md font-bold">
+                            {question.question}
                           </AccordionTrigger>
-                          <div>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger>
-                                <EllipsisVertical className="h-4 w-8" />
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>
-                                  <Pencil className="h-4 w-4 mr-4" /> Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                  <Trash2 className="h-4 w-4 mr-4" /> Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
                         </div>
-                      </AccordionHeader>
+                        <div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <EllipsisVertical className="h-4 w-8" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem>
+                                <Pencil className="h-4 w-4 mr-4" /> Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem>
+                                <Trash2 className="h-4 w-4 mr-4" /> Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </div>
                       <AccordionContent>
                         {question.alternativeQuestions.map(
                           (alternativeQuestion) => (

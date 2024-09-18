@@ -33,19 +33,19 @@ import {
   setObjectToLocalStorage,
 } from "@/utils/storage";
 import { QUESTION_ANSWER } from "@/constants/storageKeys";
+import { useToast } from "@/hooks/use-toast";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
   const { questions, setQuestions } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
+  const { toast } = useToast();
 
   const loadDataFromAPI = () => {
     fetch("/api/questions")
       .then((res) => res.json())
       .then((res) => {
-        console.log("------------ loadDataFromAPI ------------");
-        console.log(res);
         setObjectToLocalStorage(QUESTION_ANSWER, res);
         setQuestions(res);
       });
@@ -63,7 +63,10 @@ export const QuestionsAnswers = () => {
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text).then(
       function () {
-        console.log("Async: Copying to clipboard was successful!");
+        toast({
+          title: "Text Copied",
+          description: "The text was copied to the clipboard",
+        });
       },
       function (err) {
         console.error("Async: Could not copy text: ", err);

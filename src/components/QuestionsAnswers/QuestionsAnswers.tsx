@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,8 +23,43 @@ import { Toaster } from "@/components/ui/toaster";
 
 import { NewQuestion } from "./dialogs";
 
+import {
+  questionsAnswersType,
+  useQuestionsAnswers,
+} from "@/hooks/useQuestionsAnswers";
+import {
+  getObjectFromLocalStorage,
+  setObjectToLocalStorage,
+} from "@/utils/storage";
+
+const QUESTION_ANSWER = "RURAY_QUESTION_ANSWER";
+
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
+  const { questions, setQuestions } = useQuestionsAnswers(
+    (state: questionsAnswersType) => state
+  );
+
+  const loadDataFromAPI = () => {
+    fetch("/api/questions")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("------------ loadDataFromAPI ------------");
+        console.log(res);
+        setObjectToLocalStorage(QUESTION_ANSWER, res);
+        setQuestions(res);
+      });
+  };
+
+  useEffect(() => {
+    const data = getObjectFromLocalStorage(QUESTION_ANSWER);
+    if (data) {
+      setQuestions(data);
+    } else {
+      loadDataFromAPI();
+    }
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -52,67 +87,27 @@ export const QuestionsAnswers = () => {
           </div>
           <div className="mt-4">
             <Accordion type="multiple">
-              <AccordionItem value="question1">
-                <Card>
-                  <CardContent className="py-4">
-                    <AccordionHeader>
-                      <div className="flex justify-between">
-                        <AccordionTrigger>
-                          <div className="text-lg font-bold">
-                            Original Question #1
-                          </div>
-                        </AccordionTrigger>
-                        <div>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <EllipsisVertical className="h-4 w-8" />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuItem>
-                                <Pencil className="h-4 w-4 mr-4" /> Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>
-                                <Trash2 className="h-4 w-4 mr-4" /> Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-                    </AccordionHeader>
-                    <AccordionContent>
-                      <div className="text-sm text-gray-500">
-                        Alternative Question 1
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        Alternative Question 2
-                      </div>
-                      <div className="my-4 space-x-2">
-                        <Badge>Tag 1</Badge>
-                        <Badge>Tag 2</Badge>
-                        <Badge>Tag 3</Badge>
-                      </div>
-                      <div className="mt-2 space-y-2">
-                        {/* Answer 1 */}
-                        <div className="flex justify-between bg-gray-100 p-2">
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Aenean tincidunt ligula eu felis luctus, in
-                            molestie magna egestas. Etiam dapibus eu arcu ac
-                            aliquet.
-                          </p>
-                          <div className="flex space-x-2">
+              {questions.map((question, index) => (
+                <AccordionItem
+                  key={question.id}
+                  value={question.id}
+                  className="mb-4"
+                >
+                  <Card>
+                    <CardContent className="py-4">
+                      <AccordionHeader>
+                        <div className="flex justify-between">
+                          <AccordionTrigger>
+                            <div className="text-lg font-bold">
+                              {question.question}
+                            </div>
+                          </AccordionTrigger>
+                          <div>
                             <DropdownMenu>
                               <DropdownMenuTrigger>
                                 <EllipsisVertical className="h-4 w-8" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent>
-                                <DropdownMenuItem>
-                                  <Copy className="h-4 w-4 mr-4" /> Copy
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Star className="h-4 w-4 mr-4" /> Add Favorite
-                                </DropdownMenuItem>
                                 <DropdownMenuItem>
                                   <Pencil className="h-4 w-4 mr-4" /> Edit
                                 </DropdownMenuItem>
@@ -124,48 +119,71 @@ export const QuestionsAnswers = () => {
                             </DropdownMenu>
                           </div>
                         </div>
-                        {/* Answer 2 */}
-                        <div className="flex justify-between bg-gray-100 p-2">
-                          <p>
-                            Etiam id neque augue. Praesent pulvinar ipsum nisl,
-                            et consequat nibh auctor lobortis. Integer vel
-                            vehicula nisi, eget eleifend nibh. Integer rhoncus
-                            nunc vitae enim pretium viverra. Pellentesque
-                            habitant morbi tristique senectus et netus et
-                            malesuada fames ac turpis egestas.
-                          </p>
-                          <div className="flex space-x-2">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger>
-                                <EllipsisVertical className="h-4 w-8" />
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>
-                                  <Copy className="h-4 w-4 mr-4" /> Copy
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Star className="h-4 w-4 mr-4" /> Add Favorite
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Pencil className="h-4 w-4 mr-4" /> Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                  <Trash2 className="h-4 w-4 mr-4" /> Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                      </AccordionHeader>
+                      <AccordionContent>
+                        {question.alternativeQuestions.map(
+                          (alternativeQuestion) => (
+                            <div
+                              className="text-sm text-gray-500"
+                              key={alternativeQuestion.id}
+                            >
+                              {alternativeQuestion.question}
+                            </div>
+                          )
+                        )}
+                        <div className="my-4 space-x-2">
+                          <Badge>Tag 1</Badge>
+                          <Badge>Tag 2</Badge>
+                          <Badge>Tag 3</Badge>
+                        </div>
+                        <div className="mt-2 space-y-2">
+                          {question.answers.length == 0 && (
+                            <div className="text-gray-500">
+                              No answers for this question
+                            </div>
+                          )}
+                          {question.answers.map((answer) => (
+                            <div
+                              key={answer.id}
+                              className="flex justify-between bg-gray-100 p-2"
+                            >
+                              <p>{answer.answer}</p>
+                              <div className="flex space-x-2">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger>
+                                    <EllipsisVertical className="h-4 w-8" />
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent>
+                                    <DropdownMenuItem>
+                                      <Copy className="h-4 w-4 mr-4" /> Copy
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                      <Star className="h-4 w-4 mr-4" /> Add
+                                      Favorite
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                      <Pencil className="h-4 w-4 mr-4" /> Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                      <Trash2 className="h-4 w-4 mr-4" /> Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* Add Answer Button */}
+                          <div className="flex justify-end">
+                            <Button>+ Add Answer</Button>
                           </div>
                         </div>
-                        {/* Add Answer Button */}
-                        <div className="flex justify-end">
-                          <Button>+ Add Answer</Button>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </CardContent>
-                </Card>
-              </AccordionItem>
+                      </AccordionContent>
+                    </CardContent>
+                  </Card>
+                </AccordionItem>
+              ))}
             </Accordion>
           </div>
         </div>

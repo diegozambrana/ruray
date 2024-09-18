@@ -38,3 +38,20 @@ export type newQuestionFormat = {
   alternativeQuestions: string[];
   answers: string[];
 };
+
+export type questionAlternative = {
+  id: string;
+  question: string;
+};
+
+export type answer = {
+  id: string;
+  answer: string;
+};
+
+export type questionType = {
+  id: string;
+  question: string;
+  alternativeQuestions: questionAlternative[];
+  answers: answer[];
+};

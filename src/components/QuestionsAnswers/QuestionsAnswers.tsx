@@ -60,6 +60,17 @@ export const QuestionsAnswers = () => {
     }
   }, []);
 
+  const copyText = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      function () {
+        console.log("Async: Copying to clipboard was successful!");
+      },
+      function (err) {
+        console.error("Async: Could not copy text: ", err);
+      }
+    );
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -136,7 +147,7 @@ export const QuestionsAnswers = () => {
                           <Badge>Tag 2</Badge>
                           <Badge>Tag 3</Badge>
                         </div>
-                        <div className="mt-2 space-y-2">
+                        <div className="mt-2 space-y-4">
                           {question.answers.length == 0 && (
                             <div className="text-gray-500">
                               No answers for this question
@@ -145,16 +156,18 @@ export const QuestionsAnswers = () => {
                           {question.answers.map((answer) => (
                             <div
                               key={answer.id}
-                              className="flex justify-between bg-gray-100 p-2"
+                              className="flex justify-between bg-gray-100 px-4 py-2 rounded-lg"
                             >
                               <p>{answer.answer}</p>
-                              <div className="flex space-x-2">
+                              <div className="mt-2">
                                 <DropdownMenu>
                                   <DropdownMenuTrigger>
                                     <EllipsisVertical className="h-4 w-8" />
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => copyText(answer.answer)}
+                                    >
                                       <Copy className="h-4 w-4 mr-4" /> Copy
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>

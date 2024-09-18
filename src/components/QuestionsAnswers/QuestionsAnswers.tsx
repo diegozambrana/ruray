@@ -22,6 +22,7 @@ import {
 import { Toaster } from "@/components/ui/toaster";
 
 import { NewQuestion } from "./dialogs";
+import { Sidebar } from "./sidebar";
 
 import {
   questionsAnswersType,
@@ -31,8 +32,7 @@ import {
   getObjectFromLocalStorage,
   setObjectToLocalStorage,
 } from "@/utils/storage";
-
-const QUESTION_ANSWER = "RURAY_QUESTION_ANSWER";
+import { QUESTION_ANSWER } from "@/constants/storageKeys";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
@@ -200,39 +200,7 @@ export const QuestionsAnswers = () => {
             </Accordion>
           </div>
         </div>
-        <div className="w-1/3 p-4 bg-gray-100">
-          <h3 className="font-bold">Tags:</h3>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <Badge>Tag 1</Badge>
-            <Badge>Tag 2</Badge>
-            <Badge>Tag 3</Badge>
-            <Badge>Tag 4</Badge>
-            <Badge>Tag 5</Badge>
-            <Badge>Tag 6</Badge>
-            <Badge>Tag 7</Badge>
-            <Badge>Tag 8</Badge>
-            <Badge>Tag 9</Badge>
-            <Badge>Tag 10</Badge>
-          </div>
-          <h3 className="font-bold mt-4">origin</h3>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <Badge>Upwork</Badge>
-            <Badge>Toptal</Badge>
-            <Badge>Linkedin</Badge>
-          </div>
-          <h3 className="font-bold mt-4">Matcher</h3>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <Badge>Santiago</Badge>
-            <Badge>Sebastian</Badge>
-            <Badge>Juan</Badge>
-          </div>
-
-          {/* <Card>
-            <CardContent className="py-4">
-              <div>Tags</div>
-            </CardContent>
-          </Card> */}
-        </div>
+        <Sidebar />
       </div>
       <NewQuestion
         open={openNewQuestion}

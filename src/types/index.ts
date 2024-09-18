@@ -55,3 +55,24 @@ export type questionType = {
   alternativeQuestions: questionAlternative[];
   answers: answer[];
 };
+
+export type tagType = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export type originType = {
+  id: string;
+  name: string;
+  slug: string;
+  url?: string;
+};
+
+export type matcherType = {
+  id: string;
+  full_name: string;
+  email?: string;
+  linkedin?: string;
+  phone?: string;
+};

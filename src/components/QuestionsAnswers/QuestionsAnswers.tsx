@@ -127,7 +127,7 @@ export const QuestionsAnswers = () => {
                     <CardContent className="py-4">
                       <div className="flex">
                         <div className="flex-grow">
-                          <AccordionTrigger className="p-0 text-md font-bold">
+                          <AccordionTrigger className="p-0 text-md font-bold text-left">
                             {question.question}
                           </AccordionTrigger>
                         </div>

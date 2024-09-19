@@ -10,7 +10,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Copy, EllipsisVertical, Pencil, Star, Trash2 } from "lucide-react";
+import {
+  Copy,
+  Delete,
+  EllipsisVertical,
+  Pencil,
+  Star,
+  Trash2,
+} from "lucide-react";
 // import { AccordionHeader, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -35,9 +42,15 @@ import {
 } from "@/utils/storage";
 import { QUESTION_ANSWER } from "@/constants/storageKeys";
 import { useToast } from "@/hooks/use-toast";
+import { DeleteQuestion } from "./dialogs/DeleteQuestion";
+import { questionType } from "@/types";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
+  const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
+    null
+  );
   const { questions, setQuestions } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
@@ -116,17 +129,23 @@ export const QuestionsAnswers = () => {
                             {question.question}
                           </AccordionTrigger>
                         </div>
-                        <div>
+                        <div className="ml-2">
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <EllipsisVertical className="h-4 w-8" />
+                              <EllipsisVertical className="h-4 w-6" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               <DropdownMenuItem>
                                 <Pencil className="h-4 w-4 mr-4" /> Edit
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-red-600"
+                                onClick={() => {
+                                  setOpenDeleteQuestion(true);
+                                  setSelectedQuestion(question);
+                                }}
+                              >
                                 <Trash2 className="h-4 w-4 mr-4" /> Delete
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -180,7 +199,7 @@ export const QuestionsAnswers = () => {
                                       <Pencil className="h-4 w-4 mr-4" /> Edit
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem className="text-red-600">
                                       <Trash2 className="h-4 w-4 mr-4" /> Delete
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
@@ -209,7 +228,25 @@ export const QuestionsAnswers = () => {
         onClose={() => {
           setOpenNewQuestion(false);
         }}
+        onCreated={() => {
+          setOpenNewQuestion(false);
+          loadDataFromAPI();
+        }}
       />
+      {selectedQuestion && (
+        <DeleteQuestion
+          open={openDeleteQuestion}
+          onClose={() => {
+            setOpenDeleteQuestion(false);
+          }}
+          onDeleted={() => {
+            setSelectedQuestion(null);
+            setOpenDeleteQuestion(false);
+            loadDataFromAPI();
+          }}
+          question={selectedQuestion}
+        />
+      )}
       <Toaster />
     </div>
   );

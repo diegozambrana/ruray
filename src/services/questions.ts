@@ -122,3 +122,22 @@ export const getQuestions = async () => {
     data: formattedQuestions,
   };
 };
+
+export const deleteQuestion = async (questionId: string) => {
+  const supabase = createClient();
+
+  const { error: errorQuestion, data: dataQuestion } = await supabase
+    .from("ruray_question")
+    .delete()
+    .eq("id", questionId)
+    .select("*");
+
+  if (errorQuestion) {
+    return {
+      error: errorQuestion.message,
+      data: null,
+    };
+  }
+
+  return { error: null, data: dataQuestion };
+};

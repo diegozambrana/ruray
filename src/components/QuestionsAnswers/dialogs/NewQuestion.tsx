@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 type NewQuestionProps = {
   open: boolean;
   onClose: () => void;
+  onCreated: () => void;
 };
 
 const BASE_NEW_QUESTION: newQuestionFormat = {
@@ -25,7 +26,11 @@ const BASE_NEW_QUESTION: newQuestionFormat = {
   answers: [""],
 };
 
-export const NewQuestion: FC<NewQuestionProps> = ({ open, onClose }) => {
+export const NewQuestion: FC<NewQuestionProps> = ({
+  open,
+  onClose,
+  onCreated,
+}) => {
   const [data, setData] = useState<newQuestionFormat>(BASE_NEW_QUESTION);
   const [creating, setCreating] = useState(false);
   const { toast } = useToast();
@@ -59,7 +64,8 @@ export const NewQuestion: FC<NewQuestionProps> = ({ open, onClose }) => {
           title: "Question added successfully",
           description: "The question was added successfully",
         });
-        onClose();
+        // onClose();
+        onCreated();
       })
       .catch((err) => {
         console.log("ERROR", err);

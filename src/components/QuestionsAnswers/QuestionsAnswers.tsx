@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Markdown from "markdown-to-jsx";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -181,7 +182,9 @@ export const QuestionsAnswers = () => {
                               key={answer.id}
                               className="flex justify-between bg-gray-100 px-4 py-2 rounded-lg"
                             >
-                              <p>{answer.answer}</p>
+                              <Markdown className="md_container">
+                                {answer.answer}
+                              </Markdown>
                               <div className="mt-2">
                                 <DropdownMenu>
                                   <DropdownMenuTrigger>

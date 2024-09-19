@@ -18,7 +18,6 @@ import {
   Star,
   Trash2,
 } from "lucide-react";
-// import { AccordionHeader, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -43,14 +42,17 @@ import {
 import { QUESTION_ANSWER } from "@/constants/storageKeys";
 import { useToast } from "@/hooks/use-toast";
 import { DeleteQuestion } from "./dialogs/DeleteQuestion";
-import { questionType } from "@/types";
+import { answer as answerType, questionType } from "@/types";
+import { DeleteAnswer } from "./dialogs/DeleteAnswer";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
+  const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
     null
   );
+  const [selectedAnswer, setSelectedAnswer] = useState<answerType | null>(null);
   const { questions, setQuestions } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
@@ -199,7 +201,13 @@ export const QuestionsAnswers = () => {
                                       <Pencil className="h-4 w-4 mr-4" /> Edit
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="text-red-600">
+                                    <DropdownMenuItem
+                                      className="text-red-600"
+                                      onClick={() => {
+                                        setSelectedAnswer(answer);
+                                        setOpenDeleteAnswer(true);
+                                      }}
+                                    >
                                       <Trash2 className="h-4 w-4 mr-4" /> Delete
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
@@ -245,6 +253,20 @@ export const QuestionsAnswers = () => {
             loadDataFromAPI();
           }}
           question={selectedQuestion}
+        />
+      )}
+      {selectedAnswer && (
+        <DeleteAnswer
+          open={openDeleteAnswer}
+          onClose={() => {
+            setOpenDeleteAnswer(false);
+          }}
+          onDeleted={() => {
+            setSelectedAnswer(null);
+            setOpenDeleteAnswer(false);
+            loadDataFromAPI();
+          }}
+          answer={selectedAnswer}
         />
       )}
       <Toaster />

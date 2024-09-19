@@ -7,42 +7,42 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { questionType } from "@/types";
+import { answer as answerType } from "@/types";
 import { FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-type DeleteQuestionProps = {
+type DeleteAnswerProps = {
   open: boolean;
   onClose: () => void;
   onDeleted: () => void;
-  question: questionType;
+  answer: answerType;
 };
 
-export const DeleteQuestion: FC<DeleteQuestionProps> = ({
+export const DeleteAnswer: FC<DeleteAnswerProps> = ({
   open,
   onClose,
   onDeleted,
-  question,
+  answer,
 }) => {
   const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const onDelete = () => {
     setDeleting(true);
-    fetch(`/api/questions/${question.id}`, {
+    fetch(`/api/answer/${answer.id}`, {
       method: "DELETE",
     })
       .then((res) => {
         toast({
           title: "Success",
-          description: "Question deleted successfully",
+          description: "Answer deleted successfully",
         });
         onDeleted();
       })
       .catch(() => {
         toast({
           title: "Error",
-          description: "Failed to delete question",
+          description: "Failed to delete answer",
         });
       })
       .finally(() => {
@@ -61,8 +61,7 @@ export const DeleteQuestion: FC<DeleteQuestionProps> = ({
         <DialogHeader>
           <DialogTitle>Delete</DialogTitle>
           <DialogDescription>
-            Remove this question from the database. This action cannot be
-            undone.
+            Remove this answer from the database. This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

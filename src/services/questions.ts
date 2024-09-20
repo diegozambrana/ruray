@@ -141,3 +141,24 @@ export const deleteQuestion = async (questionId: string) => {
 
   return { error: null, data: dataQuestion };
 };
+
+export const addAnswerToQuestion = async (
+  questionId: string,
+  answer: string
+) => {
+  const supabase = createClient();
+
+  const { error: errorAnswer, data: dataAnswer } = await supabase
+    .from("ruray_answer")
+    .insert({ question: questionId, answer })
+    .select("*");
+
+  if (errorAnswer) {
+    return {
+      error: errorAnswer.message,
+      data: null,
+    };
+  }
+
+  return { error: null, data: dataAnswer };
+};

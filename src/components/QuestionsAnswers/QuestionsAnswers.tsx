@@ -45,11 +45,13 @@ import { useToast } from "@/hooks/use-toast";
 import { DeleteQuestion } from "./dialogs/DeleteQuestion";
 import { answer as answerType, questionType } from "@/types";
 import { DeleteAnswer } from "./dialogs/DeleteAnswer";
+import { AddAnswer } from "./dialogs/AddAnswer";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
   const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
+  const [openAddAnswer, setOpenAddAnswer] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
     null
   );
@@ -182,9 +184,13 @@ export const QuestionsAnswers = () => {
                               key={answer.id}
                               className="flex justify-between bg-gray-100 px-4 py-2 rounded-lg"
                             >
-                              <Markdown className="md_container">
-                                {answer.answer}
-                              </Markdown>
+                              {answer.answer ? (
+                                <Markdown className="md_container">
+                                  {answer.answer}
+                                </Markdown>
+                              ) : (
+                                <div className="text-gray-500">No answer</div>
+                              )}
                               <div className="mt-2">
                                 <DropdownMenu>
                                   <DropdownMenuTrigger>
@@ -221,7 +227,14 @@ export const QuestionsAnswers = () => {
 
                           {/* Add Answer Button */}
                           <div className="flex justify-end">
-                            <Button>+ Add Answer</Button>
+                            <Button
+                              onClick={() => {
+                                setSelectedQuestion(question);
+                                setOpenAddAnswer(true);
+                              }}
+                            >
+                              + Add Answer
+                            </Button>
                           </div>
                         </div>
                       </AccordionContent>
@@ -270,6 +283,19 @@ export const QuestionsAnswers = () => {
             loadDataFromAPI();
           }}
           answer={selectedAnswer}
+        />
+      )}
+      {selectedQuestion && (
+        <AddAnswer
+          open={openAddAnswer}
+          onClose={() => {
+            setOpenAddAnswer(false);
+          }}
+          onCreated={() => {
+            setOpenAddAnswer(false);
+            loadDataFromAPI();
+          }}
+          question={selectedQuestion}
         />
       )}
       <Toaster />

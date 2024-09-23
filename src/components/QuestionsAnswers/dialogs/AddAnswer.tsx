@@ -59,9 +59,11 @@ export const AddAnswer: FC<AddAnswerProps> = ({
       method: "POST",
       body: JSON.stringify({ text: answer }),
     })
-      .then((res) => res.json())
       .then((res) => {
-        setAnswer(res);
+        return res.json();
+      })
+      .then((res) => {
+        setAnswer(res.text);
         toast({
           title: "Text improved",
           description: "The text was improved by AI",

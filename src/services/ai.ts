@@ -13,7 +13,7 @@ export const getImprovedText = async (text: string) => {
         {
           role: "user",
           content: `
-        Review and fix the next text and return the text fixed in a json with the key "text":
+        Review and fix the next text between the delimiters ~~~ and return the text fixed in a json with the this format \`{"text": <fixed_text>}\`:
         ~~~
         ${text}
         ~~~

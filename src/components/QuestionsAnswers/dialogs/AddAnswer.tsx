@@ -54,6 +54,24 @@ export const AddAnswer: FC<AddAnswerProps> = ({
       });
   };
 
+  const improveTextByAI = async () => {
+    fetch("/api/ai/improve-answer", {
+      method: "POST",
+      body: JSON.stringify({ text: answer }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setAnswer(res);
+        toast({
+          title: "Text improved",
+          description: "The text was improved by AI",
+        });
+      })
+      .catch((err) => {
+        console.log("ERROR", err);
+      });
+  };
+
   return (
     <Dialog
       open={open}
@@ -75,6 +93,11 @@ export const AddAnswer: FC<AddAnswerProps> = ({
                 setAnswer(e.target.value);
               }}
             />
+            <div className="text-right mt-2">
+              <Button onClick={improveTextByAI} size="sm">
+                Improve by AI
+              </Button>
+            </div>
           </div>
         </div>
         <DialogFooter>

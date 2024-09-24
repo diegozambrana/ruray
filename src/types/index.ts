@@ -49,11 +49,19 @@ export type answer = {
   answer: string;
 };
 
+export type TagType = {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+};
+
 export type questionType = {
   id: string;
   question: string;
   alternativeQuestions: questionAlternative[];
   answers: answer[];
+  tags?: TagType[];
 };
 
 export type tagType = {

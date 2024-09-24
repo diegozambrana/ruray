@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { newQuestionFormat } from "@/types";
 import { BaseSyntheticEvent, FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { TagManager } from "@/components/TagManager";
 
 type NewQuestionProps = {
   open: boolean;
@@ -125,6 +126,12 @@ export const NewQuestion: FC<NewQuestionProps> = ({
               + Add Alternative Question
             </Button>
           </div>
+
+          <div className="grid w-full items-center gap-1.5">
+            <Label>Tags</Label>
+            <TagManager tags={[]} onChangeTags={() => {}} />
+          </div>
+
           <div className="grid w-full items-center gap-1.5">
             <Label>Answers</Label>
             {data.answers.map((answer, index) => (

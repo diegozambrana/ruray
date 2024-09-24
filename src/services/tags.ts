@@ -21,10 +21,5 @@ export const createTag = async (name: string) => {
     })
     .select("*");
 
-  console.log("Create tag");
-
-  console.log(newTag);
-  console.log(tagError);
-
   return { error: tagError, data: newTag };
 };

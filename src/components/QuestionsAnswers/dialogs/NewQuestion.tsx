@@ -24,7 +24,7 @@ type NewQuestionProps = {
 const BASE_NEW_QUESTION: newQuestionFormat = {
   question: "",
   alternativeQuestions: [],
-  answers: [""],
+  answers: [],
   tags: [],
 };
 
@@ -103,17 +103,38 @@ export const NewQuestion: FC<NewQuestionProps> = ({
           </div>
           <div className="grid w-full items-center gap-1.5">
             <Label>Alternative question</Label>
+            {data.alternativeQuestions.length === 0 && (
+              <p className="text-sm text-gray-500">
+                Add alternative questions to help users find the question.
+              </p>
+            )}
             {data.alternativeQuestions.map((altQuestion, index) => (
-              <Input
-                key={`alt-q-${index}`}
-                type="text"
-                value={altQuestion}
-                onChange={(e: BaseSyntheticEvent) => {
-                  onChange(e.target.value, "alternativeQuestions", index);
-                }}
-              />
+              <div key={`alt-q-${index}`} className="flex mt-1">
+                <Input
+                  type="text"
+                  value={altQuestion}
+                  onChange={(e: BaseSyntheticEvent) => {
+                    onChange(e.target.value, "alternativeQuestions", index);
+                  }}
+                />
+                <Button
+                  onClick={() => {
+                    setData((d) => ({
+                      ...d,
+                      alternativeQuestions: d.alternativeQuestions.filter(
+                        (_, i) => i !== index
+                      ),
+                    }));
+                  }}
+                  variant="outline"
+                  className="ml-2"
+                >
+                  X
+                </Button>
+              </div>
             ))}
             <Button
+              className="mt-2"
               onClick={() => {
                 setData((d) => ({
                   ...d,
@@ -136,14 +157,33 @@ export const NewQuestion: FC<NewQuestionProps> = ({
 
           <div className="grid w-full items-center gap-1.5">
             <Label>Answers</Label>
+            {data.answers.length === 0 && (
+              <p className="text-sm text-gray-500">
+                Add answers to the question.
+              </p>
+            )}
             {data.answers.map((answer, index) => (
-              <Textarea
-                key={`ans_${index}`}
-                value={answer}
-                onChange={(e: BaseSyntheticEvent) => {
-                  onChange(e.target.value, "answers", index);
-                }}
-              />
+              <div key={`ans_${index}`} className="flex mt-1">
+                <Textarea
+                  // key={`ans_${index}`}
+                  value={answer}
+                  onChange={(e: BaseSyntheticEvent) => {
+                    onChange(e.target.value, "answers", index);
+                  }}
+                />
+                <Button
+                  onClick={() => {
+                    setData((d) => ({
+                      ...d,
+                      answers: d.answers.filter((_, i) => i !== index),
+                    }));
+                  }}
+                  variant="outline"
+                  className="ml-2"
+                >
+                  X
+                </Button>
+              </div>
             ))}
             <Button
               onClick={() => {

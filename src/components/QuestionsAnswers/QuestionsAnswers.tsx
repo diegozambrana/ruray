@@ -170,7 +170,7 @@ export const QuestionsAnswers = () => {
                         )}
                         <div className="my-4 space-x-2">
                           {question.tags.map((tag) => (
-                            <Badge>{tag.name}</Badge>
+                            <Badge key={tag.id}>{tag.name}</Badge>
                           ))}
                         </div>
                         <div className="mt-2 space-y-4">

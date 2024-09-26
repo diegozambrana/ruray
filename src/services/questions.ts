@@ -90,9 +90,7 @@ export const getQuestions = async () => {
         id,
         question
       ),
-      tags: ruray_tag_question (
-        tag: ruray_tag(id, name, slug, description)
-      )
+      tags: ruray_tag(id, name, slug)
     `
     )
     .is("alternative_of", null);

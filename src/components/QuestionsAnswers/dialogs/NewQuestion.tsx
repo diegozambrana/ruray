@@ -60,8 +60,6 @@ export const NewQuestion: FC<NewQuestionProps> = ({
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("Success");
-        console.log(res);
         toast({
           title: "Question added successfully",
           description: "The question was added successfully",

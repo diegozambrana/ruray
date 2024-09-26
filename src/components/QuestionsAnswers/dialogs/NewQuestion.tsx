@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { newQuestionFormat } from "@/types";
+import { newQuestionFormat, TagType } from "@/types";
 import { BaseSyntheticEvent, FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TagManager } from "@/components/TagManager";
@@ -25,6 +25,7 @@ const BASE_NEW_QUESTION: newQuestionFormat = {
   question: "",
   alternativeQuestions: [],
   answers: [""],
+  tags: [],
 };
 
 export const NewQuestion: FC<NewQuestionProps> = ({
@@ -55,7 +56,7 @@ export const NewQuestion: FC<NewQuestionProps> = ({
     setCreating(true);
     fetch("/api/questions", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, tags: data.tags.map((tag) => tag.id) }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -129,7 +130,10 @@ export const NewQuestion: FC<NewQuestionProps> = ({
 
           <div className="grid w-full items-center gap-1.5">
             <Label>Tags</Label>
-            <TagManager tags={[]} onChangeTags={() => {}} />
+            <TagManager
+              tags={data.tags}
+              onChangeTags={(tags) => setData((d) => ({ ...d, tags }))}
+            />
           </div>
 
           <div className="grid w-full items-center gap-1.5">

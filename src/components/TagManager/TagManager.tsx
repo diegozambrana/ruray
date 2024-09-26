@@ -1,7 +1,7 @@
 "use client";
 
 import { TagType } from "@/types";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ComboboxTags } from "../ui/ComboboxTags";
 import { useQuestionsAnswers } from "@/hooks/useQuestionsAnswers";
 import { Badge } from "../ui/badge";
@@ -12,7 +12,7 @@ type TagManagerProps = {
   onChangeTags: (tags: TagType[]) => void;
 };
 
-export const TagManager: FC<TagManagerProps> = () => {
+export const TagManager: FC<TagManagerProps> = ({ onChangeTags }) => {
   const { tags, setTags } = useQuestionsAnswers();
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
 
@@ -26,6 +26,9 @@ export const TagManager: FC<TagManagerProps> = () => {
       return newTags;
     });
   };
+  useEffect(() => {
+    onChangeTags(selectedTags);
+  }, [selectedTags]);
 
   const addNewTag = (name: string) => {
     fetch("/api/tag", {

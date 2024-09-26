@@ -169,9 +169,9 @@ export const QuestionsAnswers = () => {
                           )
                         )}
                         <div className="my-4 space-x-2">
-                          <Badge>Tag 1</Badge>
-                          <Badge>Tag 2</Badge>
-                          <Badge>Tag 3</Badge>
+                          {question.tags.map((tag) => (
+                            <Badge>{tag.name}</Badge>
+                          ))}
                         </div>
                         <div className="mt-2 space-y-4">
                           {question.answers.length == 0 && (

@@ -52,75 +52,51 @@ export const createNewQuestion = async (newData: newQuestionFormat) => {
     }
   }
 
+  if (newData.tags.length > 0) {
+    const { error: errorTags, data: dataTags } = await supabase
+      .from("ruray_tag_question")
+      .insert(
+        newData.tags.map((tag) => ({
+          question_id: question.id,
+          tag_id: tag,
+        }))
+      )
+      .select("*");
+    if (errorTags) {
+      return {
+        error: errorTags.message,
+        data: null,
+      };
+    }
+  }
+
   return { error: null, data: dataQuestion };
 };
 
 export const getQuestions = async () => {
   const supabase = createClient();
 
-  const { data: questions, error: questionError } = await supabase
+  const { data, error } = await supabase
     .from("ruray_question")
-    .select("*")
+    .select(
+      `
+      id,
+      question,
+      answers: ruray_answer (
+        id,
+        answer
+      ),
+      alternativeQuestions: ruray_question (
+        id,
+        question
+      ),
+      tags: ruray_tag_question (
+        tag: ruray_tag(id, name, slug, description)
+      )
+    `
+    )
     .is("alternative_of", null);
-
-  if (questionError) {
-    return {
-      error: questionError.message,
-      data: null,
-    };
-  }
-
-  // Mapeamos cada pregunta para obtener sus alternativas y respuestas
-  const formattedQuestions = await Promise.all(
-    questions.map(async (question) => {
-      // Obtener preguntas alternativas
-      const { data: alternativeQuestions, error: alternativeError } =
-        await supabase
-          .from("ruray_question")
-          .select("*")
-          .eq("alternative_of", question.id); // Obtenemos las preguntas alternativas vinculadas
-
-      if (alternativeError) {
-        return {
-          error: alternativeError.message,
-          data: null,
-        };
-      }
-
-      // Obtener respuestas para la pregunta
-      const { data: answers, error: answerError } = await supabase
-        .from("ruray_answer")
-        .select("*")
-        .eq("question", question.id); // Obtenemos las respuestas vinculadas
-
-      if (answerError) {
-        return {
-          error: answerError.message,
-          data: null,
-        };
-      }
-
-      // Formateamos los datos en el formato requerido
-      return {
-        id: question.id,
-        question: question.question,
-        alternativeQuestions: alternativeQuestions.map((alt) => ({
-          id: alt.id,
-          question: alt.question,
-        })),
-        answers: answers.map((answer) => ({
-          id: answer.id,
-          answer: answer.answer,
-        })),
-      };
-    })
-  );
-
-  // Devolvemos el resultado en el formato adecuado
-  return {
-    error: null,
-    data: formattedQuestions,
-  };
+  return { data, error };
 };
 
 export const deleteQuestion = async (questionId: string) => {

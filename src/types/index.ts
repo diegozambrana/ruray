@@ -37,6 +37,7 @@ export type newQuestionFormat = {
   question: string;
   alternativeQuestions: string[];
   answers: string[];
+  tags: TagType[];
 };
 
 export type questionAlternative = {
@@ -61,7 +62,7 @@ export type questionType = {
   question: string;
   alternativeQuestions: questionAlternative[];
   answers: answer[];
-  tags?: TagType[];
+  tags: TagType[];
 };
 
 export type tagType = {

@@ -136,3 +136,89 @@ export const addAnswerToQuestion = async (
 
   return { error: null, data: dataAnswer };
 };
+
+export const editQuestion = async (questionId: string, data: any) => {
+  const supabase = createClient();
+
+  if (data.question) {
+    const { error: errorQuestion, data: dataQuestion } = await supabase
+      .from("ruray_question")
+      .update({ question: data.question })
+      .eq("id", questionId)
+      .select("*");
+
+    if (errorQuestion) {
+      return {
+        error: errorQuestion.message,
+        data: null,
+      };
+    }
+  }
+
+  if (data.newAlternativeQuestions?.length > 0) {
+    const { error: errorAltQuestions, data: dataAltQuestions } = await supabase
+      .from("ruray_question")
+      .insert(
+        data.newAlternativeQuestions.map((altQuestion: string) => ({
+          alternative_of: questionId,
+          question: altQuestion,
+        }))
+      )
+      .select("*");
+    if (errorAltQuestions) {
+      return {
+        error: errorAltQuestions.message,
+        data: null,
+      };
+    }
+  }
+
+  if (data.removedAlterntaiveQuestions?.length > 0) {
+    const { error: errorAltQuestions, data: dataAltQuestions } = await supabase
+      .from("ruray_question")
+      .delete()
+      .in("id", data.removedAlterntaiveQuestions)
+      .select("*");
+    if (errorAltQuestions) {
+      return {
+        error: errorAltQuestions.message,
+        data: null,
+      };
+    }
+  }
+
+  if (data.newTags?.length > 0) {
+    const { error: errorTags, data: dataTags } = await supabase
+      .from("ruray_tag_question")
+      .insert(
+        data.newTags.map((tag: string) => ({
+          question_id: questionId,
+          tag_id: tag,
+        }))
+      )
+      .select("*");
+    if (errorTags) {
+      return {
+        error: errorTags.message,
+        data: null,
+      };
+    }
+  }
+
+  if (data.removedTags?.length > 0) {
+    const { error: errorTags, data: dataTags } = await supabase
+      .from("ruray_tag_question")
+      .delete()
+      .in("tag_id", data.removedTags)
+      .eq("question_id", questionId)
+      .select("*");
+    if (errorTags) {
+      return {
+        error: errorTags.message,
+        data: null,
+      };
+    }
+  }
+
+  return { error: null, data: { message: "Updated Successfully" } };
+};

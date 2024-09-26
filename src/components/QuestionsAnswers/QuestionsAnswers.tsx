@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Toaster } from "@/components/ui/toaster";
 
-import { NewQuestion } from "./dialogs";
+import { EditQuestion, NewQuestion } from "./dialogs";
 import { Sidebar } from "./sidebar";
 
 import {
@@ -49,6 +49,7 @@ import { AddAnswer } from "./dialogs/AddAnswer";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
+  const [openEditQuestion, setOpenEditQuestion] = useState(false);
   const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
   const [openAddAnswer, setOpenAddAnswer] = useState(false);
@@ -140,7 +141,12 @@ export const QuestionsAnswers = () => {
                               <EllipsisVertical className="h-4 w-6" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setOpenEditQuestion(true);
+                                  setSelectedQuestion(question);
+                                }}
+                              >
                                 <Pencil className="h-4 w-4 mr-4" /> Edit
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
@@ -296,6 +302,19 @@ export const QuestionsAnswers = () => {
             loadDataFromAPI();
           }}
           question={selectedQuestion}
+        />
+      )}
+      {selectedQuestion && (
+        <EditQuestion
+          open={openEditQuestion}
+          question={selectedQuestion}
+          onClose={() => {
+            setOpenEditQuestion(false);
+          }}
+          onEdited={() => {
+            setOpenEditQuestion(false);
+            loadDataFromAPI();
+          }}
         />
       )}
       <Toaster />

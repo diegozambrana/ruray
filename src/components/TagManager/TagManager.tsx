@@ -12,7 +12,10 @@ type TagManagerProps = {
   onChangeTags: (tags: TagType[]) => void;
 };
 
-export const TagManager: FC<TagManagerProps> = ({ onChangeTags }) => {
+export const TagManager: FC<TagManagerProps> = ({
+  onChangeTags,
+  tags: basedTag,
+}) => {
   const { tags, setTags } = useQuestionsAnswers();
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
 
@@ -29,6 +32,12 @@ export const TagManager: FC<TagManagerProps> = ({ onChangeTags }) => {
   useEffect(() => {
     onChangeTags(selectedTags);
   }, [selectedTags]);
+
+  useEffect(() => {
+    if (basedTag?.length > 0) {
+      setSelectedTags(basedTag);
+    }
+  }, [basedTag]);
 
   const addNewTag = (name: string) => {
     fetch("/api/tag", {

@@ -19,12 +19,15 @@ export const deleteAnswer = async (answerId: string) => {
   return { error: null, data: dataQuestion };
 };
 
-export const editAnswer = async (answerId: string, newAnswer: any) => {
+export const editAnswer = async (
+  answerId: string,
+  data: { answer?: string; favorite?: boolean }
+) => {
   const supabase = createClient();
 
   const { error: errorQuestion, data: dataQuestion } = await supabase
     .from("ruray_answer")
-    .update({ answer: newAnswer })
+    .update(data)
     .eq("id", answerId)
     .select("*");
 

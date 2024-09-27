@@ -84,7 +84,8 @@ export const getQuestions = async () => {
       question,
       answers: ruray_answer (
         id,
-        answer
+        answer,
+        favorite
       ),
       alternativeQuestions: ruray_question (
         id,

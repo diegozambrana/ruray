@@ -45,9 +45,10 @@ export type questionAlternative = {
   question: string;
 };
 
-export type answer = {
+export type answerType = {
   id: string;
   answer: string;
+  favorite: boolean;
 };
 
 export type TagType = {
@@ -61,7 +62,7 @@ export type questionType = {
   id: string;
   question: string;
   alternativeQuestions: questionAlternative[];
-  answers: answer[];
+  answers: answerType[];
   tags: TagType[];
 };
 

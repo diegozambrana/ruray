@@ -43,10 +43,11 @@ import {
 import { QUESTION_ANSWER } from "@/constants/storageKeys";
 import { useToast } from "@/hooks/use-toast";
 import { DeleteQuestion } from "./dialogs/DeleteQuestion";
-import { answer as answerType, questionType } from "@/types";
+import { answerType, questionType } from "@/types";
 import { DeleteAnswer } from "./dialogs/DeleteAnswer";
 import { AddAnswer } from "./dialogs/AddAnswer";
 import { EditAnswer } from "./dialogs/EditAnswer";
+import { cn } from "@/lib/utils";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
@@ -94,6 +95,21 @@ export const QuestionsAnswers = () => {
         console.error("Async: Could not copy text: ", err);
       }
     );
+  };
+
+  const addToFavorite = (answer: answerType) => {
+    fetch(`/api/answer/${answer.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ favorite: !answer.favorite }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        loadDataFromAPI();
+        toast({
+          title: "Answer added to favorite",
+          description: "The answer was added to favorite",
+        });
+      });
   };
 
   return (
@@ -190,7 +206,13 @@ export const QuestionsAnswers = () => {
                           {question.answers.map((answer) => (
                             <div
                               key={answer.id}
-                              className="flex justify-between bg-gray-100 px-4 py-2 rounded-lg"
+                              className={cn(
+                                `flex justify-between px-4 py-2 rounded-lg`,
+                                {
+                                  "bg-blue-100": answer.favorite,
+                                  "bg-gray-100": !answer.favorite,
+                                }
+                              )}
                             >
                               {answer.answer ? (
                                 <Markdown className="md_container">
@@ -210,9 +232,22 @@ export const QuestionsAnswers = () => {
                                     >
                                       <Copy className="h-4 w-4 mr-4" /> Copy
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                      <Star className="h-4 w-4 mr-4" /> Add
-                                      Favorite
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        addToFavorite(answer);
+                                      }}
+                                    >
+                                      {!answer.favorite ? (
+                                        <>
+                                          <Star className="h-4 w-4 mr-4" /> Add
+                                          Favorite
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Star className="h-4 w-4 mr-4" />{" "}
+                                          Remove Favorite
+                                        </>
+                                      )}
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
                                       onClick={() => {

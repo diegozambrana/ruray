@@ -165,7 +165,6 @@ export const NewQuestion: FC<NewQuestionProps> = ({
             {data.answers.map((answer, index) => (
               <div key={`ans_${index}`} className="flex mt-1">
                 <Textarea
-                  // key={`ans_${index}`}
                   value={answer}
                   onChange={(e: BaseSyntheticEvent) => {
                     onChange(e.target.value, "answers", index);

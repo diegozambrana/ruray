@@ -1,4 +1,4 @@
-import { deleteAnswer } from "@/services/answers";
+import { deleteAnswer, editAnswer } from "@/services/answers";
 import { NextResponse } from "next/server";
 
 export const DELETE = async (
@@ -20,4 +20,24 @@ export const DELETE = async (
     JSON.stringify({ message: "Question deleted successfully", data }),
     { status: 200 }
   );
+};
+
+export const PUT = async (
+  request: Request,
+  { params }: { params: { id: string } }
+) => {
+  const { id } = params;
+  const body = await request.json();
+  console.log("Edit question with id: ", id);
+  console.log("Body: ", body);
+  const response = await editAnswer(id, body.answer);
+  const { error } = response;
+  if (error) {
+    return new NextResponse(JSON.stringify({ message: error }), {
+      status: 400,
+    });
+  }
+  return new NextResponse(JSON.stringify({ message: "Question edited" }), {
+    status: 200,
+  });
 };

@@ -46,10 +46,12 @@ import { DeleteQuestion } from "./dialogs/DeleteQuestion";
 import { answer as answerType, questionType } from "@/types";
 import { DeleteAnswer } from "./dialogs/DeleteAnswer";
 import { AddAnswer } from "./dialogs/AddAnswer";
+import { EditAnswer } from "./dialogs/EditAnswer";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
   const [openEditQuestion, setOpenEditQuestion] = useState(false);
+  const [openEditAnswer, setOpenEditAnswer] = useState(false);
   const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
   const [openAddAnswer, setOpenAddAnswer] = useState(false);
@@ -212,7 +214,12 @@ export const QuestionsAnswers = () => {
                                       <Star className="h-4 w-4 mr-4" /> Add
                                       Favorite
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        setSelectedAnswer(answer);
+                                        setOpenEditAnswer(true);
+                                      }}
+                                    >
                                       <Pencil className="h-4 w-4 mr-4" /> Edit
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
@@ -315,6 +322,19 @@ export const QuestionsAnswers = () => {
             setOpenEditQuestion(false);
             loadDataFromAPI();
           }}
+        />
+      )}
+      {selectedAnswer && (
+        <EditAnswer
+          open={openEditAnswer}
+          onClose={() => {
+            setOpenEditAnswer(false);
+          }}
+          onEdited={() => {
+            setOpenEditAnswer(false);
+            loadDataFromAPI();
+          }}
+          answerSelected={selectedAnswer}
         />
       )}
       <Toaster />

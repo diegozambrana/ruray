@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  BaseSyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Markdown from "markdown-to-jsx";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,6 +24,7 @@ import {
   Pencil,
   Star,
   Trash2,
+  X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -59,10 +66,29 @@ export const QuestionsAnswers = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
     null
   );
+  const [searchText, setSearchText] = useState<string>("");
   const [selectedAnswer, setSelectedAnswer] = useState<answerType | null>(null);
   const { questions, setQuestions } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const filteredQuestions = useMemo(() => {
+    if (searchText === "") {
+      return questions;
+    }
+    return questions.filter((question) => {
+      return (
+        question.question.toLowerCase().includes(searchText.toLowerCase()) ||
+        question.alternativeQuestions.some((alternativeQuestion) =>
+          alternativeQuestion.question
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+        )
+      );
+    });
+  }, [questions, searchText]);
+
   const { toast } = useToast();
 
   const loadDataFromAPI = () => {
@@ -112,6 +138,10 @@ export const QuestionsAnswers = () => {
       });
   };
 
+  const onSearch = () => {
+    setSearchText(searchRef.current?.value || "");
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -132,14 +162,41 @@ export const QuestionsAnswers = () => {
             </div>
             <div>
               <div className="flex">
-                <Input placeholder="Search" className="max-w-xs mr-2" />
-                <Button>Search</Button>
+                <div className="relative mr-2">
+                  <Input
+                    placeholder="Search"
+                    className="max-w-xs "
+                    ref={searchRef}
+                  />
+                  {searchText !== "" && (
+                    <X
+                      className="absolute top-3 right-2 w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800"
+                      onClick={() => {
+                        setSearchText("");
+                        if (searchRef.current) searchRef.current.value = "";
+                      }}
+                    />
+                  )}
+                </div>
+                <Button onClick={onSearch}>Search</Button>
               </div>
             </div>
           </div>
+          {searchText !== "" && (
+            <div className="mt-4">
+              <div className="text-gray-600">
+                Showing results for: <strong>{searchText}</strong>
+              </div>
+            </div>
+          )}
+          {filteredQuestions.length === 0 && (
+            <div className="mt-4 text-gray-500">
+              No questions found for the search
+            </div>
+          )}
           <div className="mt-4">
             <Accordion type="multiple">
-              {questions.map((question, index) => (
+              {filteredQuestions.map((question, index) => (
                 <AccordionItem
                   key={question.id}
                   value={question.id}

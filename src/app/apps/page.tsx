@@ -1,7 +1,6 @@
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { redirect } from "next/dist/server/api-utils";
 import Link from "next/link";
 
 export default function Dashboard() {

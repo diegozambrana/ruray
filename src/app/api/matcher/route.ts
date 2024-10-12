@@ -1,7 +1,7 @@
 import { getMatchers } from "@/services/matcher";
 import { NextResponse } from "next/server";
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   const response = await getMatchers();
   const { error, data } = response;
 

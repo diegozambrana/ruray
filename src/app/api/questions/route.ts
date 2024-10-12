@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export const POST = async (request: Request) => {
   const body: newQuestionFormat = await request.json();
   const response = await createNewQuestion(body);
-  const { error, data } = response;
+  const { error } = response;
 
   if (error) {
     return new NextResponse(JSON.stringify({ message: error }), {
@@ -19,7 +19,7 @@ export const POST = async (request: Request) => {
   );
 };
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   const response = await getQuestions();
   const { error, data } = response;
 

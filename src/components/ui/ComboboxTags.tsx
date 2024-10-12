@@ -62,7 +62,7 @@ export const ComboboxTags: React.FC<ComboboxTagsProps> = ({
           <CommandList>
             <CommandEmpty>
               <Button onClick={createTag} variant="ghost">
-                Add "{value}"
+                Add `&quot;`{value}`&quot;`
               </Button>
             </CommandEmpty>
             <CommandGroup>
@@ -70,7 +70,7 @@ export const ComboboxTags: React.FC<ComboboxTagsProps> = ({
                 <CommandItem
                   key={option.id}
                   value={option.name}
-                  onSelect={(currentValue) => {
+                  onSelect={() => {
                     onSelect(option);
                     setOpen(false);
                   }}

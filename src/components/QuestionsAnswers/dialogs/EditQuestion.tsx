@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { questionAlternative, questionType, TagType } from "@/types";
-import { BaseSyntheticEvent, FC, use, useEffect, useState } from "react";
+import { BaseSyntheticEvent, FC, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TagManager } from "@/components/TagManager";
 
@@ -76,7 +76,7 @@ export const EditQuestion: FC<NewQuestionProps> = ({
       (altQuestion) => altQuestion.id
     );
 
-    let updateData: updateDataType = {
+    const updateData: updateDataType = {
       newAlternativeQuestions: newAlternativeQuestion,
       newTags: currentTagsIds.filter((tagId) => !oldTagsIds.includes(tagId)),
       removedAlterntaiveQuestions: oldAlternativeQuestionsIds.filter(
@@ -96,7 +96,7 @@ export const EditQuestion: FC<NewQuestionProps> = ({
       body: JSON.stringify(updateData),
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(() => {
         toast({
           title: "Question updated successfully",
           description: "The question was updated successfully",

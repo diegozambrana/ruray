@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  BaseSyntheticEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "markdown-to-jsx";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,15 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Copy,
-  Delete,
-  EllipsisVertical,
-  Pencil,
-  Star,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Copy, EllipsisVertical, Pencil, Star, Trash2, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -55,6 +41,7 @@ import { DeleteAnswer } from "./dialogs/DeleteAnswer";
 import { AddAnswer } from "./dialogs/AddAnswer";
 import { EditAnswer } from "./dialogs/EditAnswer";
 import { cn } from "@/lib/utils";
+// import { FilterBar } from "./FilterBar";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
@@ -63,6 +50,7 @@ export const QuestionsAnswers = () => {
   const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
   const [openAddAnswer, setOpenAddAnswer] = useState(false);
+  // const [FilterbyTag, setFilterbyTag] = useState<string>("");
   const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
     null
   );
@@ -129,7 +117,7 @@ export const QuestionsAnswers = () => {
       body: JSON.stringify({ favorite: !answer.favorite }),
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(() => {
         loadDataFromAPI();
         toast({
           title: "Answer added to favorite",
@@ -182,6 +170,12 @@ export const QuestionsAnswers = () => {
               </div>
             </div>
           </div>
+          {/* <FilterBar
+            onApplyFilter={(tags) => {
+              console.log("onApplyFilter");
+              console.log(tags);
+            }}
+          /> */}
           {searchText !== "" && (
             <div className="mt-4">
               <div className="text-gray-600">
@@ -196,7 +190,7 @@ export const QuestionsAnswers = () => {
           )}
           <div className="mt-4">
             <Accordion type="multiple">
-              {filteredQuestions.map((question, index) => (
+              {filteredQuestions.map((question) => (
                 <AccordionItem
                   key={question.id}
                   value={question.id}
@@ -330,7 +324,6 @@ export const QuestionsAnswers = () => {
                             </div>
                           ))}
 
-                          {/* Add Answer Button */}
                           <div className="flex justify-end">
                             <Button
                               onClick={() => {

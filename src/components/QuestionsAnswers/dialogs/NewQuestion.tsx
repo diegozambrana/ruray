@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { newQuestionFormat, TagType } from "@/types";
+import { newQuestionFormat } from "@/types";
 import { BaseSyntheticEvent, FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TagManager } from "@/components/TagManager";
@@ -59,7 +59,7 @@ export const NewQuestion: FC<NewQuestionProps> = ({
       body: JSON.stringify({ ...data, tags: data.tags.map((tag) => tag.id) }),
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(() => {
         toast({
           title: "Question added successfully",
           description: "The question was added successfully",

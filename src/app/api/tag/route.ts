@@ -1,7 +1,7 @@
 import { createTag, getTags } from "@/services/tags";
 import { NextResponse } from "next/server";
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   const response = await getTags();
   const { error, data } = response;
 

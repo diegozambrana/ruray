@@ -32,7 +32,7 @@ export const DeleteQuestion: FC<DeleteQuestionProps> = ({
     fetch(`/api/questions/${question.id}`, {
       method: "DELETE",
     })
-      .then((res) => {
+      .then(() => {
         toast({
           title: "Success",
           description: "Question deleted successfully",

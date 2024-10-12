@@ -40,6 +40,14 @@ export type newQuestionFormat = {
   tags: TagType[];
 };
 
+export type EditQuestionFormat = {
+  question: string;
+  newAlternativeQuestions: string[];
+  newTags: string[];
+  removedAlterntaiveQuestions: string[];
+  removedTags: string[];
+};
+
 export type questionAlternative = {
   id: string;
   question: string;

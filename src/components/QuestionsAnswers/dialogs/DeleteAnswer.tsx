@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { answer as answerType } from "@/types";
+import { answerType } from "@/types";
 import { FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,7 +32,7 @@ export const DeleteAnswer: FC<DeleteAnswerProps> = ({
     fetch(`/api/answer/${answer.id}`, {
       method: "DELETE",
     })
-      .then((res) => {
+      .then(() => {
         toast({
           title: "Success",
           description: "Answer deleted successfully",

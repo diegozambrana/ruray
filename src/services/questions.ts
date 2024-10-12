@@ -1,4 +1,4 @@
-import { newQuestionFormat } from "@/types";
+import { EditQuestionFormat, newQuestionFormat } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 
 export const createNewQuestion = async (newData: newQuestionFormat) => {
@@ -17,7 +17,7 @@ export const createNewQuestion = async (newData: newQuestionFormat) => {
   const question = dataQuestion[0];
 
   if (newData.alternativeQuestions.length > 0) {
-    const { error: errorAltQuestions, data: dataAltQuestions } = await supabase
+    const { error: errorAltQuestions } = await supabase
       .from("ruray_question")
       .insert(
         newData.alternativeQuestions.map((altQuestion) => ({
@@ -35,7 +35,7 @@ export const createNewQuestion = async (newData: newQuestionFormat) => {
   }
 
   if (newData.answers.length > 0) {
-    const { error: errorAnswers, data: dataAnswers } = await supabase
+    const { error: errorAnswers } = await supabase
       .from("ruray_answer")
       .insert(
         newData.answers.map((answer) => ({
@@ -53,7 +53,7 @@ export const createNewQuestion = async (newData: newQuestionFormat) => {
   }
 
   if (newData.tags.length > 0) {
-    const { error: errorTags, data: dataTags } = await supabase
+    const { error: errorTags } = await supabase
       .from("ruray_tag_question")
       .insert(
         newData.tags.map((tag) => ({
@@ -138,11 +138,14 @@ export const addAnswerToQuestion = async (
   return { error: null, data: dataAnswer };
 };
 
-export const editQuestion = async (questionId: string, data: any) => {
+export const editQuestion = async (
+  questionId: string,
+  data: EditQuestionFormat
+) => {
   const supabase = createClient();
 
   if (data.question) {
-    const { error: errorQuestion, data: dataQuestion } = await supabase
+    const { error: errorQuestion } = await supabase
       .from("ruray_question")
       .update({ question: data.question })
       .eq("id", questionId)
@@ -157,7 +160,7 @@ export const editQuestion = async (questionId: string, data: any) => {
   }
 
   if (data.newAlternativeQuestions?.length > 0) {
-    const { error: errorAltQuestions, data: dataAltQuestions } = await supabase
+    const { error: errorAltQuestions } = await supabase
       .from("ruray_question")
       .insert(
         data.newAlternativeQuestions.map((altQuestion: string) => ({
@@ -175,7 +178,7 @@ export const editQuestion = async (questionId: string, data: any) => {
   }
 
   if (data.removedAlterntaiveQuestions?.length > 0) {
-    const { error: errorAltQuestions, data: dataAltQuestions } = await supabase
+    const { error: errorAltQuestions } = await supabase
       .from("ruray_question")
       .delete()
       .in("id", data.removedAlterntaiveQuestions)
@@ -189,7 +192,7 @@ export const editQuestion = async (questionId: string, data: any) => {
   }
 
   if (data.newTags?.length > 0) {
-    const { error: errorTags, data: dataTags } = await supabase
+    const { error: errorTags } = await supabase
       .from("ruray_tag_question")
       .insert(
         data.newTags.map((tag: string) => ({
@@ -207,7 +210,7 @@ export const editQuestion = async (questionId: string, data: any) => {
   }
 
   if (data.removedTags?.length > 0) {
-    const { error: errorTags, data: dataTags } = await supabase
+    const { error: errorTags } = await supabase
       .from("ruray_tag_question")
       .delete()
       .in("tag_id", data.removedTags)

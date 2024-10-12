@@ -61,7 +61,7 @@ export const TagManager: FC<TagManagerProps> = ({
         onCreate={addNewTag}
       />
       <div className="space-x-2 mt-4">
-        {selectedTags.map((tag, index) => (
+        {selectedTags.map((tag) => (
           <Badge key={tag.id} className="pr-1">
             {tag.name}{" "}
             <span className="ml-2">

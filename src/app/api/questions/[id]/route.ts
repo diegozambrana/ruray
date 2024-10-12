@@ -29,7 +29,7 @@ export const PUT = async (
   const { id } = params;
   const body = await request.json();
   const response = await editQuestion(id, body);
-  const { error, data } = response;
+  const { error } = response;
 
   if (error) {
     return new NextResponse(JSON.stringify({ message: error }), {

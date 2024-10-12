@@ -27,7 +27,7 @@ export function Sidebar({ className }: SidebarProps) {
       )}
     >
       <div className="hidden p-5 pt-10 lg:block">
-        <Link href={"/dashboard"}>
+        <Link href={"/apps"}>
           <h1>{isMinimized ? "R" : "Ruray"}</h1>
         </Link>
       </div>

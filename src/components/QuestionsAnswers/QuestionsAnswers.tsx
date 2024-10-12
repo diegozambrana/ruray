@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  BaseSyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Markdown from "markdown-to-jsx";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -126,7 +132,8 @@ export const QuestionsAnswers = () => {
       });
   };
 
-  const onSearch = () => {
+  const onSearch = (e: BaseSyntheticEvent) => {
+    e.preventDefault();
     setSearchText(searchRef.current?.value || "");
   };
 
@@ -149,25 +156,27 @@ export const QuestionsAnswers = () => {
               </Button>
             </div>
             <div>
-              <div className="flex">
-                <div className="relative mr-2">
-                  <Input
-                    placeholder="Search"
-                    className="max-w-xs "
-                    ref={searchRef}
-                  />
-                  {searchText !== "" && (
-                    <X
-                      className="absolute top-3 right-2 w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800"
-                      onClick={() => {
-                        setSearchText("");
-                        if (searchRef.current) searchRef.current.value = "";
-                      }}
+              <form onSubmit={onSearch}>
+                <div className="flex">
+                  <div className="relative mr-2">
+                    <Input
+                      placeholder="Search"
+                      className="max-w-xs"
+                      ref={searchRef}
                     />
-                  )}
+                    {searchText !== "" && (
+                      <X
+                        className="absolute top-3 right-2 w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800"
+                        onClick={() => {
+                          setSearchText("");
+                          if (searchRef.current) searchRef.current.value = "";
+                        }}
+                      />
+                    )}
+                  </div>
+                  <Button type="submit">Search</Button>
                 </div>
-                <Button onClick={onSearch}>Search</Button>
-              </div>
+              </form>
             </div>
           </div>
           {/* <FilterBar

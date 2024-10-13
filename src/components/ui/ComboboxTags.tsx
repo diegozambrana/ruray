@@ -22,12 +22,14 @@ type ComboboxTagsProps = {
   options: TagType[];
   onSelect: (option: TagType) => void;
   onCreate: (name: string) => void;
+  withoutAgregation?: boolean;
 };
 
 export const ComboboxTags: React.FC<ComboboxTagsProps> = ({
   options,
   onSelect,
   onCreate,
+  withoutAgregation = false,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<string>("");
@@ -60,11 +62,13 @@ export const ComboboxTags: React.FC<ComboboxTagsProps> = ({
             }}
           />
           <CommandList>
-            <CommandEmpty>
-              <Button onClick={createTag} variant="ghost">
-                Add `&quot;`{value}`&quot;`
-              </Button>
-            </CommandEmpty>
+            {!withoutAgregation && (
+              <CommandEmpty>
+                <Button onClick={createTag} variant="ghost">
+                  Add `&quot;`{value}`&quot;`
+                </Button>
+              </CommandEmpty>
+            )}
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem

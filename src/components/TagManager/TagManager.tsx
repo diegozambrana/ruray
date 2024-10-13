@@ -10,11 +10,13 @@ import { X } from "lucide-react";
 type TagManagerProps = {
   tags: TagType[];
   onChangeTags: (tags: TagType[]) => void;
+  withoutAgregation?: boolean;
 };
 
 export const TagManager: FC<TagManagerProps> = ({
   onChangeTags,
   tags: basedTag,
+  withoutAgregation = false,
 }) => {
   const { tags, setTags } = useQuestionsAnswers();
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
@@ -59,6 +61,7 @@ export const TagManager: FC<TagManagerProps> = ({
           setSelectedTags([...selectedTags, tag]);
         }}
         onCreate={addNewTag}
+        withoutAgregation={withoutAgregation}
       />
       <div className="space-x-2 mt-4">
         {selectedTags.map((tag) => (

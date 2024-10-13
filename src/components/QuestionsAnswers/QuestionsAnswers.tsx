@@ -42,12 +42,12 @@ import {
 import { QUESTION_ANSWER } from "@/constants/storageKeys";
 import { useToast } from "@/hooks/use-toast";
 import { DeleteQuestion } from "./dialogs/DeleteQuestion";
-import { answerType, questionType } from "@/types";
+import { answerType, questionType, TagType } from "@/types";
 import { DeleteAnswer } from "./dialogs/DeleteAnswer";
 import { AddAnswer } from "./dialogs/AddAnswer";
 import { EditAnswer } from "./dialogs/EditAnswer";
 import { cn } from "@/lib/utils";
-// import { FilterBar } from "./FilterBar";
+import { TagManager } from "../TagManager";
 
 export const QuestionsAnswers = () => {
   const [openNewQuestion, setOpenNewQuestion] = useState(false);
@@ -56,7 +56,7 @@ export const QuestionsAnswers = () => {
   const [openDeleteAnswer, setOpenDeleteAnswer] = useState(false);
   const [openDeleteQuestion, setOpenDeleteQuestion] = useState(false);
   const [openAddAnswer, setOpenAddAnswer] = useState(false);
-  // const [FilterbyTag, setFilterbyTag] = useState<string>("");
+  const [filterTags, setFilterTags] = useState<TagType[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<questionType | null>(
     null
   );
@@ -68,20 +68,28 @@ export const QuestionsAnswers = () => {
   const searchRef = useRef<HTMLInputElement>(null);
 
   const filteredQuestions = useMemo(() => {
-    if (searchText === "") {
-      return questions;
+    let filteredQuestionsResult = [...questions];
+    if (filterTags.length > 0) {
+      filteredQuestionsResult = filteredQuestionsResult.filter((question) => {
+        return filterTags
+          .map((tag) => tag.id)
+          .every((tag) => question.tags.map((tag) => tag.id).includes(tag));
+      });
     }
-    return questions.filter((question) => {
-      return (
-        question.question.toLowerCase().includes(searchText.toLowerCase()) ||
-        question.alternativeQuestions.some((alternativeQuestion) =>
-          alternativeQuestion.question
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-        )
-      );
-    });
-  }, [questions, searchText]);
+    if (searchText !== "") {
+      filteredQuestionsResult.filter((question) => {
+        return (
+          question.question.toLowerCase().includes(searchText.toLowerCase()) ||
+          question.alternativeQuestions.some((alternativeQuestion) =>
+            alternativeQuestion.question
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          )
+        );
+      });
+    }
+    return filteredQuestionsResult;
+  }, [questions, searchText, filterTags]);
 
   const { toast } = useToast();
 
@@ -179,12 +187,18 @@ export const QuestionsAnswers = () => {
               </form>
             </div>
           </div>
-          {/* <FilterBar
-            onApplyFilter={(tags) => {
-              console.log("onApplyFilter");
-              console.log(tags);
-            }}
-          /> */}
+          <div className="mt-4 flex">
+            <div className="mr-4">Filter:</div>
+            <div>
+              <TagManager
+                tags={filterTags}
+                onChangeTags={(tags) => {
+                  setFilterTags(tags);
+                }}
+                withoutAgregation
+              />
+            </div>
+          </div>
           {searchText !== "" && (
             <div className="mt-4">
               <div className="text-gray-600">

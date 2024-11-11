@@ -17,7 +17,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Copy, EllipsisVertical, Pencil, Star, Trash2, X } from "lucide-react";
+import {
+  Copy,
+  CopyIcon,
+  EllipsisVertical,
+  Pencil,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -289,9 +297,17 @@ export const QuestionsAnswers = () => {
                               )}
                             >
                               {answer.answer ? (
-                                <Markdown className="md_container">
-                                  {answer.answer}
-                                </Markdown>
+                                <div className="relative group hover:bg-slate-200">
+                                  <Markdown className="md_container">
+                                    {answer.answer}
+                                  </Markdown>
+                                  <Button
+                                    onClick={() => copyText(answer.answer)}
+                                    className="absolute top-2 right-2 hidden group-hover:flex "
+                                  >
+                                    <CopyIcon className="w-4 h-4" />
+                                  </Button>
+                                </div>
                               ) : (
                                 <div className="text-gray-500">No answer</div>
                               )}

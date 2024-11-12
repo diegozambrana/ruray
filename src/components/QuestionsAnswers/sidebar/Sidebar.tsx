@@ -6,8 +6,9 @@ import {
 import { useEffect } from "react";
 
 export const Sidebar = () => {
-  const { tags, matchers, origins, setTags, setMatchers, setOrigins } =
-    useQuestionsAnswers((state: questionsAnswersType) => state);
+  const { tags, setTags } = useQuestionsAnswers(
+    (state: questionsAnswersType) => state
+  );
 
   const loadTags = () => {
     fetch("/api/tag")

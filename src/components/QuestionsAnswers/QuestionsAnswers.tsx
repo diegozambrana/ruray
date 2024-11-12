@@ -37,7 +37,7 @@ import {
 import { Toaster } from "@/components/ui/toaster";
 
 import { EditQuestion, NewQuestion } from "./dialogs";
-import { Sidebar } from "./sidebar";
+// import { Sidebar } from "./sidebar";
 
 import {
   questionsAnswersType,

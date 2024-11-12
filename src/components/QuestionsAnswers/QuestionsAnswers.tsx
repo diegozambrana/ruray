@@ -65,7 +65,7 @@ export const QuestionsAnswers = () => {
   );
   const [searchText, setSearchText] = useState<string>("");
   const [selectedAnswer, setSelectedAnswer] = useState<answerType | null>(null);
-  const { questions, setQuestions } = useQuestionsAnswers(
+  const { questions, setQuestions, tags, setTags } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
   const searchRef = useRef<HTMLInputElement>(null);
@@ -104,8 +104,17 @@ export const QuestionsAnswers = () => {
       });
   };
 
+  const loadTags = () => {
+    fetch("/api/tag")
+      .then((res) => res.json())
+      .then((res) => {
+        setTags(res);
+      });
+  };
+
   useEffect(() => {
     loadDataFromAPI();
+    loadTags();
   }, []);
 
   const copyText = (text: string) => {
@@ -263,9 +272,11 @@ export const QuestionsAnswers = () => {
                             </div>
                           )
                         )}
-                        <div className="my-4 space-x-2">
+                        <div className="my-4">
                           {question.tags.map((tag) => (
-                            <Badge key={tag.id}>{tag.name}</Badge>
+                            <Badge className="mr-2 mb-2" key={tag.id}>
+                              {tag.name}
+                            </Badge>
                           ))}
                         </div>
                         <div className="mt-2 space-y-4">

@@ -3,10 +3,16 @@ import { createClient } from "@/utils/supabase/server";
 
 export const createNewQuestion = async (newData: newQuestionFormat) => {
   const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user === null) {
+    return { data: [], error: null };
+  }
 
   const { error: errorQuestion, data: dataQuestion } = await supabase
     .from("ruray_question")
-    .insert({ question: newData.question })
+    .insert({ question: newData.question, user_id: user.id })
     .select("*");
   if (errorQuestion) {
     return {
@@ -75,6 +81,12 @@ export const createNewQuestion = async (newData: newQuestionFormat) => {
 
 export const getQuestions = async () => {
   const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user === null) {
+    return { data: [], error: null };
+  }
 
   const { data, error } = await supabase
     .from("ruray_question")
@@ -94,6 +106,7 @@ export const getQuestions = async () => {
       tags: ruray_tag(id, name, slug)
     `
     )
+    .eq("user_id", user.id)
     .is("alternative_of", null);
   return { data, error };
 };

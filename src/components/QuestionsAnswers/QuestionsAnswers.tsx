@@ -80,7 +80,7 @@ export const QuestionsAnswers = () => {
       });
     }
     if (searchText !== "") {
-      filteredQuestionsResult.filter((question) => {
+      filteredQuestionsResult = filteredQuestionsResult.filter((question) => {
         return (
           question.question.toLowerCase().includes(searchText.toLowerCase()) ||
           question.alternativeQuestions.some((alternativeQuestion) =>

@@ -14,6 +14,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { LogOut, User } from "lucide-react";
+import { useSession } from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -28,6 +31,8 @@ export function DashboardNav({
 }: DashboardNavProps) {
   const path = usePathname();
   const { isMinimized } = useSidebar();
+  const { signOut, session } = useSession();
+  const router = useRouter();
 
   if (!items?.length) {
     return null;
@@ -74,6 +79,40 @@ export function DashboardNav({
             )
           );
         })}
+        <div className="absolute bottom-4">
+          <div
+            className={
+              "flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium"
+            }
+            onClick={() => {}}
+          >
+            <User className={`ml-3 size-5 flex-none`} />
+
+            {isMobileNav || (!isMinimized && !isMobileNav) ? (
+              <span className="mr-2 truncate">{session?.user.email}</span>
+            ) : (
+              ""
+            )}
+          </div>
+          <div
+            className={cn(
+              "cursor-pointer flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+            )}
+            onClick={() => {
+              if (setOpen) setOpen(false);
+              signOut();
+              router.push("/");
+            }}
+          >
+            <LogOut className={`ml-3 size-5 flex-none`} />
+
+            {isMobileNav || (!isMinimized && !isMobileNav) ? (
+              <span className="mr-2 truncate">{"Sign Out"}</span>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </TooltipProvider>
     </nav>
   );

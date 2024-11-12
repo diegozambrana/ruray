@@ -145,7 +145,7 @@ export const QuestionsAnswers = () => {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <h1>Questions Answers Manager</h1>
+        <h1 className="text-lg">Questions Answers Manager</h1>
       </div>
 
       <div className="flex space-x-4">
@@ -208,7 +208,7 @@ export const QuestionsAnswers = () => {
               No questions found for the search
             </div>
           )}
-          <div className="mt-4">
+          <div className="mt-4 overflow-scroll">
             <Accordion type="multiple">
               {filteredQuestions.map((question) => (
                 <AccordionItem

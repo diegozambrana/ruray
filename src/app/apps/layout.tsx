@@ -20,7 +20,7 @@ export default async function Layout({
   return (
     <div className="flex">
       <Sidebar />
-      <main className="w-full flex-1 overflow-hidden">
+      <main className="w-full flex-1 overflow-hidden h-screen overflow-scroll">
         <Header />
         {children}
       </main>

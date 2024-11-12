@@ -43,11 +43,6 @@ import {
   questionsAnswersType,
   useQuestionsAnswers,
 } from "@/hooks/useQuestionsAnswers";
-import {
-  getObjectFromLocalStorage,
-  setObjectToLocalStorage,
-} from "@/utils/storage";
-import { QUESTION_ANSWER } from "@/constants/storageKeys";
 import { useToast } from "@/hooks/use-toast";
 import { DeleteQuestion } from "./dialogs/DeleteQuestion";
 import { answerType, questionType, TagType } from "@/types";
@@ -105,18 +100,12 @@ export const QuestionsAnswers = () => {
     fetch("/api/questions")
       .then((res) => res.json())
       .then((res) => {
-        setObjectToLocalStorage(QUESTION_ANSWER, res);
         setQuestions(res);
       });
   };
 
   useEffect(() => {
-    const data = getObjectFromLocalStorage(QUESTION_ANSWER);
-    if (data) {
-      setQuestions(data);
-    } else {
-      loadDataFromAPI();
-    }
+    loadDataFromAPI();
   }, []);
 
   const copyText = (text: string) => {
@@ -160,7 +149,7 @@ export const QuestionsAnswers = () => {
       </div>
 
       <div className="flex space-x-4">
-        <div className="w-2/3">
+        <div className="flex-grow">
           <div className="flex justify-between">
             <div>
               <Button
@@ -382,7 +371,7 @@ export const QuestionsAnswers = () => {
             </Accordion>
           </div>
         </div>
-        <Sidebar />
+        {/* <Sidebar /> */}
       </div>
       <NewQuestion
         open={openNewQuestion}

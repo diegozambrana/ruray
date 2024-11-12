@@ -65,7 +65,7 @@ export const QuestionsAnswers = () => {
   );
   const [searchText, setSearchText] = useState<string>("");
   const [selectedAnswer, setSelectedAnswer] = useState<answerType | null>(null);
-  const { questions, setQuestions, tags, setTags } = useQuestionsAnswers(
+  const { questions, setQuestions, setTags } = useQuestionsAnswers(
     (state: questionsAnswersType) => state
   );
   const searchRef = useRef<HTMLInputElement>(null);
